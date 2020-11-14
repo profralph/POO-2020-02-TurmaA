@@ -25,7 +25,7 @@ public class ManterProduto {
 		
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
-		
+								
 			while(rs.next()) {
 				
 				Produto p = new Produto();
@@ -45,6 +45,35 @@ public class ManterProduto {
 		}
 		
 		return produtos;
+	}
+	
+	public Produto selecionarProduto(Integer id) {
+		
+		String sql = "SELECT id_produto, nome, preco FROM produto WHERE id_produto = ? ";
+		
+		Produto p = new Produto();
+		
+		try {
+		
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setInt(1, id);
+			ResultSet rs = stmt.executeQuery();
+								
+			while(rs.next()) {
+												
+				p.setId(rs.getInt("id_produto"));
+				p.setNome(rs.getString("nome"));
+				p.setPreco(rs.getDouble("preco"));
+			}
+			
+			stmt.close();
+			
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
+		
+		return p;
 	}
 	
 	public void mostrarProdutos(List<Produto> produtos) {
